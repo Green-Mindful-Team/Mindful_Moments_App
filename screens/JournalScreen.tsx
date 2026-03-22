@@ -48,6 +48,7 @@ export default function JournalScreen() {
     setRefreshing(false);
   };
 
+  // how each item looks
   const renderEntry = ({ item }: { item: JournalEntry }) => {
     const entryDate = new Date(item.date);
     const preview = item.content.length > 100 
