@@ -114,18 +114,11 @@ export default function MoodTrackingScreen() {
       };
     }
 
-    // const labels = moodHistory.map((item) => {
-    //   const date = new Date(item.date);
-    //   return format(date, 'MMM dd');
-    // });
-
     const labels = moodHistory.map((item) => {
-      // Parse YYYY-MM-DD as local date to avoid timezone shift (e.g. Mar 22 showing as Mar 21)
-      const [y, m, d] = item.date.split('-').map(Number);
-      const date = new Date(y, m - 1, d);
+      const date = new Date(item.date);
       return format(date, 'MMM dd');
     });
-    
+
     const data = moodHistory.map((item) => item.mood);
 
     return {
