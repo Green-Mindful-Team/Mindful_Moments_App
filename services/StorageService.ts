@@ -96,13 +96,8 @@ class StorageService {
       }
 
       const encryptedEntries: string[] = JSON.parse(encryptedData);
-      const decryptedEntries = await EncryptionService.decryptEntries(encryptedEntries);
-      //const entries = await EncryptionService.decryptEntries(encryptedEntries);
+      const entries = await EncryptionService.decryptEntries(encryptedEntries);
       
-      const entries: JournalEntry[] = decryptedEntries.map((entry: any) => ({
-      ...entry,
-      createdAt: entry.createdAt ?? entry.date ?? new Date().toISOString(),
-    }));
       // Sort by date (newest first)
       return entries.sort((a, b) => 
         new Date(b.date).getTime() - new Date(a.date).getTime()
