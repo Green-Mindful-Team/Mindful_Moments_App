@@ -13,6 +13,7 @@ import MoodTrackingScreen from './screens/MoodTrackingScreen';
 import PromptsScreen from './screens/PromptsScreen';
 import EntryDetailScreen from './screens/EntryDetailScreen';
 import NewEntryScreen from './screens/NewEntryScreen';
+import WelcomeScreen from './screens/WelcomeScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -20,6 +21,11 @@ const Stack = createStackNavigator();
 function JournalStack() {
   return (
     <Stack.Navigator>
+    <Stack.Screen
+        name="Welcome"
+        component={WelcomeScreen}
+        options={{ headerShown: false }}
+      />
       <Stack.Screen 
         name="JournalList" 
         component={JournalScreen}

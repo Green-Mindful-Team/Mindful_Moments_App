@@ -112,10 +112,21 @@ class AIService {
       );
 
       const content = response.data.choices[0].message.content;
-      const lines = content.split('\n').filter(line => line.trim());
+
+      //below is the original code giving me issues (JC)
+      //const lines = content.split('\n').filter(line => line.trim());
+      const lines: string[] = content
+      .split('\n')
+      .filter((line: string) => line.trim() !== '');
       
       const summary = lines[0] || 'Summary unavailable';
-      const insights = lines.slice(1, 4).filter(line => line.trim()) || [];
+
+      //below is the original code giving me issues
+      //const insights = lines.slice(1, 4).filter(line => line.trim()) || [];
+
+      const insights: string[] = lines
+      .slice(1, 4)
+      .filter((line: string) => line.trim() !== '');
       const sentimentMatch = content.toLowerCase().match(/(positive|neutral|negative)/);
       const sentiment = (sentimentMatch?.[1] as 'positive' | 'neutral' | 'negative') || 'neutral';
 
