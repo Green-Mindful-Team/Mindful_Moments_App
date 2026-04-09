@@ -97,14 +97,17 @@ export default function JournalScreen() {
   const getMoodIcon = (mood: number): any => {
     if (mood >= 4) return 'happy';
     if (mood >= 3) return 'happy-outline';
-    if (mood >= 2) return 'sad-outline';
-    return 'sad';
+    if (mood === 3) return 'ellipse';         // neutral
+    if (mood === 2) return 'sad-outline';     // sad
+    return 'sad';                             // very sad
   };
 
   const getMoodColor = (mood: number): string => {
-    if (mood >= 4) return '#10b981';
-    if (mood >= 3) return '#f59e0b';
-    return '#ef4444';
+    if (mood >= 5) return '#22c55e'; // green
+    if (mood >= 4) return '#84cc16';
+    if (mood === 3) return '#9ca3af'; // gray
+    if (mood === 2) return '#f97316'; // orange
+    return '#ef4444'; // red
   };
 
   return (
@@ -142,7 +145,7 @@ export default function JournalScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f9fafb',
+    backgroundColor: '#f2f5de',
   },
   listContent: {
     padding: 16,
@@ -174,7 +177,8 @@ const styles = StyleSheet.create({
   },
   promptText: {
     fontSize: 12,
-    color: '#6366f1',
+    color: '#648767',
+    //color: '#6366f1',
     fontStyle: 'italic',
     marginBottom: 8,
   },
@@ -218,7 +222,8 @@ const styles = StyleSheet.create({
     width: 56,
     height: 56,
     borderRadius: 28,
-    backgroundColor: '#6366f1',
+    backgroundColor: '#648767',
+    //backgroundColor: '#6366f1',
     justifyContent: 'center',
     alignItems: 'center',
     shadowColor: '#000',

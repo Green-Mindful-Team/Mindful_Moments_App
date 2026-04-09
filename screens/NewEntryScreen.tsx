@@ -204,7 +204,7 @@ export default function NewEntryScreen() {
             <Ionicons
               name={getMoodIcon(value)}
               size={32}
-              color={mood === value ? '#6366f1' : '#9ca3af'}
+              color={mood === value ? '#648767' : '#9ca3af'}
             />
           </TouchableOpacity>
         ))}
@@ -222,7 +222,7 @@ export default function NewEntryScreen() {
   if (isLoading && entryId) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#6366f1" />
+        <ActivityIndicator size="large" color="#648767" />
       </View>
     );
   }
@@ -233,16 +233,16 @@ export default function NewEntryScreen() {
         {prompt && (
           <View style={styles.promptContainer}>
             <View style={styles.promptHeader}>
-              <Ionicons name="bulb" size={20} color="#6366f1" />
+              <Ionicons name="bulb" size={20} color="#648767" />
               <Text style={styles.promptLabel}>Today's Prompt</Text>
               {!entryId && (
                 <TouchableOpacity onPress={() => generatePrompt(true)} disabled={isGeneratingPrompt}>
-                  <Ionicons name="refresh" size={20} color="#6366f1" />
+                  <Ionicons name="refresh" size={20} color="#648767" />
                 </TouchableOpacity>
               )}
             </View>
             {isGeneratingPrompt ? (
-              <ActivityIndicator size="small" color="#6366f1" style={styles.promptLoader} />
+              <ActivityIndicator size="small" color="#648767" style={styles.promptLoader} />
             ) : (
               <Text style={styles.promptText}>{prompt}</Text>
             )}
@@ -265,10 +265,10 @@ export default function NewEntryScreen() {
 
         {voiceUri && (
           <View style={styles.voiceContainer}>
-            <Ionicons name="mic" size={16} color="#6366f1" />
+            <Ionicons name="mic" size={16} color="'#648767" />
             <Text style={styles.voiceText}>Voice recording attached</Text>
             <TouchableOpacity onPress={() => VoiceService.playRecording(voiceUri)}>
-              <Ionicons name="play" size={20} color="#6366f1" />
+              <Ionicons name="play" size={20} color="#648767"/>
             </TouchableOpacity>
           </View>
         )}
@@ -282,7 +282,7 @@ export default function NewEntryScreen() {
           <Ionicons
             name={isRecording ? 'stop' : 'mic'}
             size={24}
-            color={isRecording ? '#ef4444' : '#6366f1'}
+            color={isRecording ? '#ef4444' : '#648767'}
           />
         </TouchableOpacity>
         <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
@@ -296,7 +296,8 @@ export default function NewEntryScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f9fafb',
+    backgroundColor:'#fff',
+    //backgroundColor: '#f9fafb',
   },
   loadingContainer: {
     flex: 1,
@@ -310,7 +311,10 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   promptContainer: {
-    backgroundColor: '#ede9fe',
+    //backgroundColor:'#aeef9e', light green
+    backgroundColor:'#d9f1f1', //silver
+    //backgroundColor:'#cee7e6', //light cyan
+    //backgroundColor: '#ede9fe',
     borderRadius: 12,
     padding: 16,
     marginBottom: 16,
@@ -324,7 +328,8 @@ const styles = StyleSheet.create({
   promptLabel: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#6366f1',
+    color:'#648767',
+    //color: '#6366f1',
     flex: 1,
   },
   promptLoader: {
@@ -359,7 +364,8 @@ const styles = StyleSheet.create({
     borderColor: '#e5e7eb',
   },
   moodButtonSelected: {
-    borderColor: '#6366f1',
+    borderColor:'#648767',
+    //borderColor: '#6366f1',
     backgroundColor: '#eef2ff',
   },
   inputContainer: {
@@ -408,7 +414,8 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 56,
     borderRadius: 12,
-    backgroundColor: '#6366f1',
+    backgroundColor:'#648767',
+    //backgroundColor: '#6366f1',
     justifyContent: 'center',
     alignItems: 'center',
   },
