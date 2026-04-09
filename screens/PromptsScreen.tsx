@@ -196,7 +196,7 @@ export default function PromptsScreen() {
               <Ionicons
                 name={category.icon as any}
                 size={24}
-                color={selectedCategory === category.id ? '#6366f1' : '#6b7280'}
+                color={selectedCategory === category.id ? '#648767' : '#6b7280'}
               />
               <Text
                 style={[
@@ -256,17 +256,17 @@ export default function PromptsScreen() {
       {currentPrompt && (
         <View style={styles.promptCard}>
           <View style={styles.promptHeader}>
-            <Ionicons name="bulb" size={24} color="#6366f1" />
+            <Ionicons name="bulb" size={24} color="#648767" />
             <Text style={styles.promptCardTitle}>Today's Prompt</Text>
           </View>
           <Text style={styles.promptText}>{currentPrompt}</Text>
           <View style={styles.promptActions}>
             <TouchableOpacity style={styles.useButton} onPress={usePrompt}>
-              <Ionicons name="create-outline" size={18} color="#6366f1" />
+              <Ionicons name="create-outline" size={18} color="#648767" />
               <Text style={styles.useButtonText}>Use This Prompt</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.saveButton} onPress={savePrompt}>
-              <Ionicons name="bookmark-outline" size={18} color="#6366f1" />
+              <Ionicons name="bookmark-outline" size={18} color="#648767" />
               <Text style={styles.saveButtonText}>Save</Text>
             </TouchableOpacity>
           </View>
@@ -294,7 +294,7 @@ export default function PromptsScreen() {
                   style={styles.savedActionButton}
                   onPress={() => startEditPrompt(prompt)}
                 >
-                  <Ionicons name="create-outline" size={16} color="#6366f1" />
+                  <Ionicons name="create-outline" size={16} color="#648767" />
                   <Text style={styles.savedActionText}>Edit</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -358,7 +358,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
-    backgroundColor: '#6366f1',
+    backgroundColor: '#648767',
     borderRadius: 10,
     paddingVertical: 12,
   },
@@ -406,7 +406,7 @@ const styles = StyleSheet.create({
     borderColor: '#e5e7eb',
   },
   categoryCardActive: {
-    borderColor: '#6366f1',
+    borderColor: '#648767',
     backgroundColor: '#eef2ff',
   },
   categoryLabel: {
@@ -417,14 +417,14 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   categoryLabelActive: {
-    color: '#6366f1',
+    color: '#648767',
   },
   generateButton: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
-    backgroundColor: '#6366f1',
+    backgroundColor: '#648767',
     borderRadius: 12,
     padding: 16,
     marginBottom: 24,
@@ -449,7 +449,7 @@ const styles = StyleSheet.create({
   promptCardTitle: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#6366f1',
+    color: '#648767',
   },
   promptText: {
     fontSize: 16,
@@ -474,7 +474,7 @@ const styles = StyleSheet.create({
   useButtonText: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#6366f1',
+    color: '#648767',
   },
   saveButton: {
     flexDirection: 'row',
@@ -489,7 +489,7 @@ const styles = StyleSheet.create({
   saveButtonText: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#6366f1',
+    color: '#648767',
   },
   savedSection: {
     marginTop: 8,
@@ -500,7 +500,7 @@ const styles = StyleSheet.create({
     padding: 16,
     marginBottom: 12,
     borderLeftWidth: 4,
-    borderLeftColor: '#6366f1',
+    borderLeftColor: '#648767',
   },
   savedPromptText: {
     fontSize: 14,
@@ -510,7 +510,7 @@ const styles = StyleSheet.create({
   },
   savedPromptCategory: {
     fontSize: 12,
-    color: '#6366f1',
+    color: '#648767',
     fontWeight: '500',
   },
   savedPromptActions: {
@@ -531,7 +531,7 @@ const styles = StyleSheet.create({
   savedActionText: {
     fontSize: 12,
     fontWeight: '600',
-    color: '#6366f1',
+    color: '#648767',
   },
   deleteActionText: {
     color: '#ef4444',

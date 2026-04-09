@@ -200,7 +200,8 @@ export default function EntryDetailScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f9fafb',
+    backgroundColor: '#fff',
+    //backgroundColor: '#f9fafb',
   },
   loadingContainer: {
     flex: 1,
@@ -222,7 +223,8 @@ const styles = StyleSheet.create({
     marginTop: 24,
     paddingHorizontal: 24,
     paddingVertical: 12,
-    backgroundColor: '#6366f1',
+    backgroundColor: '#648767',
+    //backgroundColor: '#6366f1',
     borderRadius: 8,
   },
   backButtonText: {
@@ -307,7 +309,8 @@ const styles = StyleSheet.create({
   },
   voiceButtonText: {
     fontSize: 14,
-    color: '#6366f1',
+    color:'#648767',
+    //color: '#6366f1',
     fontWeight: '500',
   },
   footer: {
@@ -331,7 +334,8 @@ const styles = StyleSheet.create({
   editButtonText: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#6366f1',
+    color: '#648767',
+    //color: '#6366f1',
   },
   deleteButton: {
     flex: 1,
