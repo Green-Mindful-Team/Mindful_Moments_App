@@ -316,6 +316,7 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   header: {
+    marginTop:54,
     marginBottom: 24,
   },
   title: {
@@ -339,7 +340,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   periodButtonActive: {
-    backgroundColor: '#7dc95e',
+    backgroundColor: '#6d9f71',
     borderColor: '#7dc95e',
   },
   periodButtonText: {

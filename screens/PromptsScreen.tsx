@@ -325,6 +325,7 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   title: {
+    marginTop:50,
     fontSize: 28,
     fontWeight: '700',
     color: '#111827',
@@ -361,6 +362,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#648767',
     borderRadius: 10,
     paddingVertical: 12,
+    width:200,
+    height:50,
   },
   customPromptButtonText: {
     color: '#fff',
