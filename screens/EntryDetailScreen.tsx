@@ -104,7 +104,7 @@ export default function EntryDetailScreen() {
   if (isLoading) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#6366f1" />
+        <ActivityIndicator size="large" color="#648767" />
       </View>
     );
   }
@@ -174,7 +174,7 @@ export default function EntryDetailScreen() {
             <Ionicons
               name={isPlaying ? 'pause' : 'play'}
               size={20}
-              color="#6366f1"
+              color="#648767"
             />
             <Text style={styles.voiceButtonText}>
               {isPlaying ? 'Playing...' : 'Play Voice Recording'}
