@@ -29,6 +29,7 @@ export default function HomeScreen({ navigation }: Props) {
 
   const [selectedDate, setSelectedDate] = useState(10);
   const [affirmation, setAffirmation] = useState('');
+  const [sleepHours, setSleepHours] = useState<number | null>(null);
   
   const getAffirmation = () => {
   const hour = new Date().getHours();
@@ -91,17 +92,43 @@ useEffect(() => {
           );
         })}
       </View>
-
     <View style={styles.affirmationBox}>
     <Text style={styles.affirmationTitle}>Daily Affirmation</Text>
     <Text style={styles.affirmationText}>{affirmation}</Text>
     </View>
+
     <TouchableOpacity
         style={styles.journalButton}
         onPress={() => navigation.navigate('JournalList')}
         >
         <Text style={styles.journalButtonText}>Journal Logs</Text>
     </TouchableOpacity>
+
+    <View style={styles.sleepBox}>
+  <Text style={styles.sleepTitle}>How did you sleep?</Text>
+
+  <View style={styles.sleepOptions}>
+    {[4, 5, 6, 7, 8].map((hours) => (
+      <TouchableOpacity
+        key={hours}
+        style={[
+          styles.sleepButton,
+          sleepHours === hours && styles.sleepButtonSelected,
+        ]}
+        onPress={() => setSleepHours(hours)}
+      >
+        <Text
+          style={[
+            styles.sleepButtonText,
+            sleepHours === hours && styles.sleepButtonTextSelected,
+          ]}
+        >
+          {hours}h
+        </Text>
+      </TouchableOpacity>
+    ))}
+  </View>
+</View>
     </SafeAreaView>
   );
 }
@@ -207,5 +234,46 @@ affirmationText: {
   fontSize: 16,
   color: '#111827',
   fontStyle: 'italic',
+},
+sleepBox: {
+  backgroundColor: '#eef2ff',
+  padding: 16,
+  borderRadius: 12,
+  marginTop:20,
+  marginBottom: 16,
+  marginRight:8,
+  marginLeft:8,
+},
+
+sleepTitle: {
+  fontSize: 17,
+  fontWeight: '600',
+  marginBottom: 10,
+  color: '#3730a3',
+},
+
+sleepOptions: {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+},
+
+sleepButton: {
+  paddingVertical: 8,
+  paddingHorizontal: 12,
+  borderRadius: 8,
+  backgroundColor: '#fff',
+},
+
+sleepButtonSelected: {
+  backgroundColor: '#6366f1',
+},
+
+sleepButtonText: {
+  color: '#111827',
+},
+
+sleepButtonTextSelected: {
+  color: '#fff',
+  fontWeight: '600',
 },
 });
