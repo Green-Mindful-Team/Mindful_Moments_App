@@ -145,7 +145,7 @@ export default function JournalScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f2f5de',
+    backgroundColor: '#cfdbcd',
   },
   listContent: {
     padding: 16,
