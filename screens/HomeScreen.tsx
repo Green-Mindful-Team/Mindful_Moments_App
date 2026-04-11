@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -7,6 +7,10 @@ import {
   TouchableOpacity,
   SafeAreaView,
 } from 'react-native';
+import { daytimeAffirmations, eveningAffirmations } from '../data/affirmations';
+
+
+
 
 const days = [
   { day: 'Mon', date: 7 },
@@ -22,13 +26,30 @@ type Props = {
 };
 
 export default function HomeScreen({ navigation }: Props) {
+
   const [selectedDate, setSelectedDate] = useState(10);
+  const [affirmation, setAffirmation] = useState('');
+  
+  const getAffirmation = () => {
+  const hour = new Date().getHours();
+
+  const list =
+    hour < 17 ? daytimeAffirmations : eveningAffirmations;
+
+  const randomIndex = Math.floor(Math.random() * list.length);
+  return list[randomIndex];
+};
+useEffect(() => {
+  setAffirmation(getAffirmation());
+    }, []);
+
+
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <View>
-          <Text style={styles.greeting}>Hi, User</Text>
+          <Text style={styles.greeting}>Hi, User!</Text>
         </View>
 
         <Image
@@ -69,14 +90,18 @@ export default function HomeScreen({ navigation }: Props) {
             </TouchableOpacity>
           );
         })}
-        
       </View>
-      <TouchableOpacity
-            style={styles.journalButton}
-            onPress={() => navigation.navigate('JournalList')}
-            >
-            <Text style={styles.journalButtonText}>Go to Journal</Text>
-            </TouchableOpacity>
+
+    <View style={styles.affirmationBox}>
+    <Text style={styles.affirmationTitle}>Daily Affirmation</Text>
+    <Text style={styles.affirmationText}>{affirmation}</Text>
+    </View>
+    <TouchableOpacity
+        style={styles.journalButton}
+        onPress={() => navigation.navigate('JournalList')}
+        >
+        <Text style={styles.journalButtonText}>Journal Logs</Text>
+    </TouchableOpacity>
     </SafeAreaView>
   );
 }
@@ -84,15 +109,17 @@ export default function HomeScreen({ navigation }: Props) {
 const styles = StyleSheet.create({
     journalButton: {
   marginTop: 32,
+  marginLeft:32,
+  marginRight:32,
   backgroundColor: '#648767',
-  height: 52,
+  height: 59,
   borderRadius: 12,
   justifyContent: 'center',
   alignItems: 'center',
 },
 journalButtonText: {
   color: '#fff',
-  fontSize: 16,
+  fontSize: 18,
   fontWeight: '600',
 },
   container: {
@@ -108,7 +135,9 @@ journalButtonText: {
     marginBottom: 28,
   },
   greeting: {
-    fontSize: 24,
+    marginLeft:20,
+    marginTop:10,
+    fontSize: 28,
     fontWeight: '600',
     color: '#111827',
   },
@@ -154,4 +183,29 @@ journalButtonText: {
     color: '#111827',
     fontWeight: '700',
   },
+  affirmationBox: {
+    backgroundColor: '#f6ca83',
+  //backgroundColor: '#eee82c',
+  padding: 16,
+  borderRadius: 12,
+  marginTop: 33,
+  marginBottom: 8,
+  marginLeft:20,
+  marginRight:20,
+  borderLeftWidth: 20,
+  borderLeftColor: '#949d6a',
+},
+
+affirmationTitle: {
+  fontSize: 18,
+  fontWeight: '600',
+  color: '#fff',
+  marginBottom: 9,
+},
+
+affirmationText: {
+  fontSize: 16,
+  color: '#111827',
+  fontStyle: 'italic',
+},
 });
