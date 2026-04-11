@@ -11,7 +11,7 @@ type Props = {
 export default function WelcomeScreen({ navigation }: Props) {
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigation.replace('Login');
+      navigation.navigate('Login');
     }, 4000);
 
     return () => clearTimeout(timer);

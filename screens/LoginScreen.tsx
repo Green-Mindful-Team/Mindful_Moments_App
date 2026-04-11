@@ -22,7 +22,7 @@ export default function LoginScreen({ navigation }: Props) {
       return;
     }
 
-    navigation.replace('JournalList');
+    navigation.navigate('Home');
   };
 
   return (
@@ -51,7 +51,7 @@ export default function LoginScreen({ navigation }: Props) {
         <Text style={styles.loginButtonText}>Log In</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => navigation.replace('JournalList')}>
+      <TouchableOpacity onPress={() => navigation.replace('Home')}>
         <Text style={styles.skipText}>Skip for now</Text>
       </TouchableOpacity>
     </View>
