@@ -261,7 +261,7 @@ export default function MoodTrackingScreen() {
               <View style={styles.insightsList}>
                 {insights.insights.map((insight, index) => (
                   <View key={index} style={styles.insightItem}>
-                    <Ionicons name="checkmark-circle" size={16} color="#6366f1" />
+                    <Ionicons name="checkmark-circle" size={16} color="#648767" />
                     <Text style={styles.insightText}>{insight}</Text>
                   </View>
                 ))}
@@ -339,8 +339,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   periodButtonActive: {
-    backgroundColor: '#6366f1',
-    borderColor: '#6366f1',
+    backgroundColor: '#7dc95e',
+    borderColor: '#7dc95e',
   },
   periodButtonText: {
     fontSize: 14,
