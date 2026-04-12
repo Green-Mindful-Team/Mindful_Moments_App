@@ -93,7 +93,11 @@ useEffect(() => {
         })}
       </View>
     <View style={styles.affirmationBox}>
-    <Text style={styles.affirmationTitle}>Daily Affirmation</Text>
+    <Text style={styles.affirmationTitle}>Tip of the day</Text>
+    <Image
+        source={require('../assets/images/lightbulb.png')}
+        style={styles.lightbulb}
+      />
     <Text style={styles.affirmationText}>{affirmation}</Text>
     </View>
 
@@ -276,4 +280,10 @@ sleepButtonTextSelected: {
   color: '#fff',
   fontWeight: '600',
 },
+lightbulb:{
+  width: 60,
+  height: 60,
+  resizeMode: 'contain',
+  marginBottom: 24,
+}
 });
