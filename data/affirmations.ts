@@ -2,6 +2,13 @@
 
 
 export const daytimeAffirmations = [
+"Start each day with a few minutes of deep breathing to center yourself.",
+"Practice gratitude by noting three things you appreciate each day.",
+"Engage in mindful eating by savoring each bite and minimizing distractions.",
+"Take regular breaks to stretch and check in with your body throughout the day.",
+"Limit multitasking; focus on one task at a time for better concentration.",
+"Spend time in nature to reconnect with your surroundings and reduce stress.",
+  /*
   "You are capable of handling whatever today brings.",
   "Small progress is still progress.",
   "You’ve got this — one step at a time.",
@@ -23,15 +30,24 @@ export const daytimeAffirmations = [
     "I am grateful for this moment, which enriches my life.",
     "I release the past and live fully in the present moment.",
     "My most important goal is to be at peace, regardless of the situation.",
+    */
 
 
 
 ];
 
 export const eveningAffirmations = [
+  "Set aside 10-15 minutes before bed for quiet reflection.",
+"Write down three things you are grateful for from the day.",
+"Reflect on any challenges faced and what you learned from them.",
+"Practice deep breathing to calm your mind and body.",
+"Visualize positive outcomes for tomorrow’s tasks or goals.",
+"End with a positive affirmation to foster a sense of peace.",
+  /*
   "You did enough today.",
   "Rest is productive too.",
   "Reflect, release, and recharge.",
    "I sleep soundly, deeply, and beautifully into this night.",
-   "I rest peacefully and soundly, knowing all is well in my world."
+   "I rest peacefully and soundly, knowing all is well in my world.",
+   */
 ];
