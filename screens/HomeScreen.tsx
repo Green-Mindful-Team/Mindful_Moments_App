@@ -8,6 +8,7 @@ import {
   SafeAreaView,
 } from 'react-native';
 import { daytimeAffirmations, eveningAffirmations } from '../data/affirmations';
+import { useTheme } from '../constants/ThemeContext';
 
 
 
@@ -27,6 +28,7 @@ type Props = {
 
 export default function HomeScreen({ navigation }: Props) {
 
+  const colors = useTheme();
   const [selectedDate, setSelectedDate] = useState(10);
   const [affirmation, setAffirmation] = useState('');
   const [sleepHours, setSleepHours] = useState<number | null>(null);
@@ -40,14 +42,11 @@ export default function HomeScreen({ navigation }: Props) {
   const randomIndex = Math.floor(Math.random() * list.length);
   return list[randomIndex];
 };
-useEffect(() => {
-  setAffirmation(getAffirmation());
-    }, []);
 
-
+useEffect(() => { setAffirmation(getAffirmation()); }, []);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, {backgroundColor: colors.background}]}>
       <View style={styles.header}>
         <View>
           <Text style={styles.greeting}>Hi, User!</Text>
@@ -69,19 +68,19 @@ useEffect(() => {
               style={styles.dayWrapper}
               onPress={() => setSelectedDate(item.date)}
             >
-              <Text style={[styles.dayText, isSelected && styles.selectedDayText]}>
+              <Text style={[styles.dayText, {color: isSelected ? colors.selectedDay : colors.textMuted}, isSelected && styles.selectedDayText]}>
                 {item.day}
               </Text>
 
               <View
                 style={[
-                  styles.dateCircle,
+                  styles.dateCircle, {backgroundColor: colors.dateCircle },
                   isSelected && styles.selectedDateCircle,
                 ]}
               >
                 <Text
                   style={[
-                    styles.dateText,
+                    styles.dateText, { color: colors.text },
                     isSelected && styles.selectedDateText,
                   ]}
                 >
@@ -92,198 +91,72 @@ useEffect(() => {
           );
         })}
       </View>
-    <View style={styles.affirmationBox}>
-    <Text style={styles.affirmationTitle}>Tip of the day</Text>
-    <Image
+
+    <View style={[styles.affirmationBox, { backgroundColor: colors.affirmationBox, borderLeftColor: colors.affirmationBorder }]}>
+      <Text style={styles.affirmationTitle}>Tip of the day</Text>
+      <Image
         source={require('../assets/images/lightbulb.png')}
         style={styles.lightbulb}
       />
-    <Text style={styles.affirmationText}>{affirmation}</Text>
+      <Text style={[styles.affirmationText, { color: colors.affirmationText }]}>{affirmation}</Text>
     </View>
 
     <TouchableOpacity
-        style={styles.journalButton}
+        style={[styles.journalButton, {backgroundColor: colors.journalButton }]}
         onPress={() => navigation.navigate('JournalList')}
         >
         <Text style={styles.journalButtonText}>Journal Logs</Text>
     </TouchableOpacity>
 
-    <View style={styles.sleepBox}>
+    <View style={[styles.sleepBox, { backgroundColor: colors.sleepBox }]}>
   <Text style={styles.sleepTitle}>How did you sleep?</Text>
 
   <View style={styles.sleepOptions}>
     {[4, 5, 6, 7, 8].map((hours) => (
       <TouchableOpacity
         key={hours}
-        style={[
-          styles.sleepButton,
+        style={[styles.sleepButton, { backgroundColor: colors.sleepButton },
           sleepHours === hours && styles.sleepButtonSelected,
         ]}
         onPress={() => setSleepHours(hours)}
       >
         <Text
-          style={[
-            styles.sleepButtonText,
-            sleepHours === hours && styles.sleepButtonTextSelected,
-          ]}
-        >
+          style={[styles.sleepButtonText, { color: colors.sleepButtonText },
+            sleepHours === hours && styles.sleepButtonTextSelected]}>
           {hours}h
         </Text>
       </TouchableOpacity>
     ))}
   </View>
 </View>
-    </SafeAreaView>
+</SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-    journalButton: {
-  marginTop: 32,
-  marginLeft:32,
-  marginRight:32,
-  backgroundColor: '#648767',
-  height: 59,
-  borderRadius: 12,
-  justifyContent: 'center',
-  alignItems: 'center',
-},
-journalButtonText: {
-  color: '#fff',
-  fontSize: 18,
-  fontWeight: '600',
-},
-  container: {
-    flex: 1,
-    backgroundColor: '#f7f5f2',
-    paddingHorizontal: 20,
-    paddingTop: 20,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 28,
-  },
-  greeting: {
-    marginLeft:20,
-    marginTop:10,
-    fontSize: 28,
-    fontWeight: '600',
-    color: '#111827',
-  },
-  profileImage: {
-    width: 54,
-    height: 54,
-    borderRadius: 27,
-  },
-  calendarRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-  },
-  dayWrapper: {
-    alignItems: 'center',
-  },
-  dayText: {
-    fontSize: 14,
-    color: '#9ca3af',
-    marginBottom: 10,
-  },
-  selectedDayText: {
-    color: '#111827',
-    fontWeight: '600',
-  },
-  dateCircle: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    backgroundColor: '#ffffff',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  selectedDateCircle: {
-    backgroundColor: '#f4b400',
-  },
-  dateText: {
-    fontSize: 16,
-    color: '#111827',
-    fontWeight: '500',
-  },
-  selectedDateText: {
-    color: '#111827',
-    fontWeight: '700',
-  },
-  affirmationBox: {
-    backgroundColor: '#f6ca83',
-  //backgroundColor: '#eee82c',
-  padding: 16,
-  borderRadius: 12,
-  marginTop: 33,
-  marginBottom: 8,
-  marginLeft:20,
-  marginRight:20,
-  borderLeftWidth: 20,
-  borderLeftColor: '#949d6a',
-},
-
-affirmationTitle: {
-  fontSize: 18,
-  fontWeight: '600',
-  color: '#fff',
-  marginBottom: 9,
-},
-
-affirmationText: {
-  fontSize: 16,
-  color: '#111827',
-  fontStyle: 'italic',
-},
-sleepBox: {
-  backgroundColor: '#eef2ff',
-  padding: 16,
-  borderRadius: 12,
-  marginTop:20,
-  marginBottom: 16,
-  marginRight:8,
-  marginLeft:8,
-},
-
-sleepTitle: {
-  fontSize: 17,
-  fontWeight: '600',
-  marginBottom: 10,
-  color: '#3730a3',
-},
-
-sleepOptions: {
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-},
-
-sleepButton: {
-  paddingVertical: 8,
-  paddingHorizontal: 12,
-  borderRadius: 8,
-  backgroundColor: '#fff',
-},
-
-sleepButtonSelected: {
-  backgroundColor: '#6366f1',
-},
-
-sleepButtonText: {
-  color: '#111827',
-},
-
-sleepButtonTextSelected: {
-  color: '#fff',
-  fontWeight: '600',
-},
-lightbulb:{
-  width: 60,
-  height: 60,
-  resizeMode: 'contain',
-  marginBottom: 24,
-}
+ container:            { flex: 1, paddingHorizontal: 20, paddingTop: 20 },
+  header:               { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 28 },
+  greeting:             { marginLeft: 20, marginTop: 10, fontSize: 28, fontWeight: '600' },
+  profileImage:         { width: 54, height: 54, borderRadius: 27 },
+  calendarRow:          { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' },
+  dayWrapper:           { alignItems: 'center' },
+  dayText:              { fontSize: 14, marginBottom: 10 },
+  selectedDayText:      { fontWeight: '600' },
+  dateCircle:           { width: 44, height: 44, borderRadius: 22, justifyContent: 'center', alignItems: 'center' },
+  selectedDateCircle:   { backgroundColor: '#f4b400' },
+  dateText:             { fontSize: 16, fontWeight: '500' },
+  selectedDateText:     { fontWeight: '700' },
+  affirmationBox:       { padding: 16, borderRadius: 12, marginTop: 33, marginBottom: 8, marginLeft: 20, marginRight: 20, borderLeftWidth: 20 },
+  affirmationTitle:     { fontSize: 18, fontWeight: '600', color: '#fff', marginBottom: 9 },
+  affirmationText:      { fontSize: 16, fontStyle: 'italic' },
+  journalButton:        { marginTop: 32, marginLeft: 32, marginRight: 32, height: 59, borderRadius: 12, justifyContent: 'center', alignItems: 'center' },
+  journalButtonText:    { color: '#fff', fontSize: 18, fontWeight: '600' },
+  sleepBox:             { padding: 16, borderRadius: 12, marginTop: 20, marginBottom: 16, marginRight: 8, marginLeft: 8 },
+  sleepTitle:           { fontSize: 17, fontWeight: '600', marginBottom: 10 },
+  sleepOptions:         { flexDirection: 'row', justifyContent: 'space-between' },
+  sleepButton:          { paddingVertical: 8, paddingHorizontal: 12, borderRadius: 8 },
+  sleepButtonSelected:  { backgroundColor: '#6366f1' },
+  sleepButtonText:      { },
+  sleepButtonTextSelected: { color: '#fff', fontWeight: '600' },
+  lightbulb:            { width: 60, height: 60, resizeMode: 'contain', marginBottom: 24 },
 });

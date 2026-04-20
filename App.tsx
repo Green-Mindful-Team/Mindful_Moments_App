@@ -6,6 +6,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import {ThemeProvider } from './constants/ThemeContext';
 
 // Screens
 import JournalScreen from './screens/JournalScreen';
@@ -59,35 +60,37 @@ function JournalStack() {
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <StatusBar style="auto" />
-      <Tab.Navigator
-        screenOptions={({ route }) => ({
-          tabBarIcon: ({ focused, color, size }) => {
-            let iconName: any;
+    <ThemeProvider>{}
+      <NavigationContainer>
+        <StatusBar style="auto" />
+        <Tab.Navigator
+          screenOptions={({ route }) => ({
+            tabBarIcon: ({ focused, color, size }) => {
+              let iconName: any;
 
-            if (route.name === 'Journal') {
-              iconName = focused ? 'book' : 'book-outline';
-            } else if (route.name === 'Mood') {
-              iconName = focused ? 'happy' : 'happy-outline';
-            } else if (route.name === 'Prompts') {
-              iconName = focused ? 'bulb' : 'bulb-outline';
-            } else {
-              iconName = 'help-outline';
-            }
+              if (route.name === 'Journal') {
+                iconName = focused ? 'book' : 'book-outline';
+              } else if (route.name === 'Mood') {
+                iconName = focused ? 'happy' : 'happy-outline';
+              } else if (route.name === 'Prompts') {
+                iconName = focused ? 'bulb' : 'bulb-outline';
+              } else {
+                iconName = 'help-outline';
+              }
 
-            return <Ionicons name={iconName} size={size} color={color} />;
-          },
-          tabBarActiveTintColor: '#6366f1',
-          tabBarInactiveTintColor: 'gray',
-          headerShown: false,
-        })}
-      >
-        <Tab.Screen name="Journal" component={JournalStack} />
-        <Tab.Screen name="Mood" component={MoodTrackingScreen} />
-        <Tab.Screen name="Prompts" component={PromptsScreen} />
-      </Tab.Navigator>
-    </NavigationContainer>
+              return <Ionicons name={iconName} size={size} color={color} />;
+            },
+            tabBarActiveTintColor: '#6366f1',
+            tabBarInactiveTintColor: 'gray',
+            headerShown: false,
+          })}
+        >
+          <Tab.Screen name="Journal" component={JournalStack} />
+          <Tab.Screen name="Mood" component={MoodTrackingScreen} />
+          <Tab.Screen name="Prompts" component={PromptsScreen} />
+        </Tab.Navigator>
+      </NavigationContainer>
+    </ThemeProvider>
   );
 }
 
