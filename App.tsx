@@ -4,9 +4,10 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, useColorScheme } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import {ThemeProvider } from './constants/ThemeContext';
+import {lightColors, darkColors } from './constants/theme';
 
 // Screens
 import JournalScreen from './screens/JournalScreen';
@@ -59,10 +60,13 @@ function JournalStack() {
 }
 
 export default function App() {
+  const scheme = useColorScheme();
+  const colors = scheme == 'dark' ? darkColors : lightColors;
+
   return (
     <ThemeProvider>{}
       <NavigationContainer>
-        <StatusBar style="auto" />
+        <StatusBar style={scheme === 'dark' ? 'light' : 'dark'} />
         <Tab.Navigator
           screenOptions={({ route }) => ({
             tabBarIcon: ({ focused, color, size }) => {
@@ -81,7 +85,11 @@ export default function App() {
               return <Ionicons name={iconName} size={size} color={color} />;
             },
             tabBarActiveTintColor: '#6366f1',
-            tabBarInactiveTintColor: 'gray',
+            tabBarInactiveTintColor: scheme === 'dark' ? '#9ca3af' : 'gray',
+            tabBarStyle: {
+              backgroundColor: colors.card,
+              borderTopColor: scheme === 'dark' ? '#4f435c' : '#e5e7eb',
+            },
             headerShown: false,
           })}
         >

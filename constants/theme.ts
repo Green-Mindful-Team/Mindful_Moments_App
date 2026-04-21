@@ -16,19 +16,19 @@ export const lightColors = {
 };
 
 export const darkColors = {
-  background:      '#111827',
+  background:      '#261B2D',
   text:            '#f3f4f6',
   textMuted:       '#6b7280',
-  dateCircle:      '#1f2937',
+  dateCircle:      '#5E5CDE',
   selectedDay:     '#f3f4f6',
-  affirmationBox:  '#3d3200',
-  affirmationBorder: '#6b6e3a',
+  affirmationBox:  '#4f435c',
+  affirmationBorder: '#5c4358',
   affirmationText: '#f3f4f6',
-  sleepBox:        '#1e1b4b',
+  sleepBox:        '#4f435c',
   sleepTitle:      '#a5b4fc',
-  sleepButton:     '#1f2937',
+  sleepButton:     '#5E5CDE',
   sleepButtonText: '#f3f4f6',
-  journalButton:   '#4a6350',
+  journalButton:   '#5E5CDE',
   card:            '#1f2937',
 };
 
