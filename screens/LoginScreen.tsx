@@ -7,12 +7,14 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native';
+import { useTheme } from '../constants/ThemeContext';
 
 type Props = {
   navigation: any;
 };
 
 export default function LoginScreen({ navigation }: Props) {
+  const colors = useTheme();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -26,13 +28,14 @@ export default function LoginScreen({ navigation }: Props) {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, {backgroundColor: colors.background}]}>
       <Text style={styles.title}>Login</Text>
-      <Text style={styles.subtitle}>Welcome back to Mindful Moments</Text>
+      <Text style={[styles.subtitle, {color: colors.textMuted }]}>Welcome back to Mindful Moments</Text>
 
       <TextInput
-        style={styles.input}
+        style={[styles.input, {backgroundColor: colors.background, borderColor: colors.textMuted, color: colors.text,}]}
         placeholder="Email"
+        placeholderTextColor={colors.textMuted}
         value={email}
         onChangeText={setEmail}
         autoCapitalize="none"
@@ -40,8 +43,9 @@ export default function LoginScreen({ navigation }: Props) {
       />
 
       <TextInput
-        style={styles.input}
+        style={[styles.input, {backgroundColor: colors.background, borderColor: colors.textMuted, color: colors.text}]}
         placeholder="Password"
+        placeholderTextColor={colors.textMuted}
         value={password}
         onChangeText={setPassword}
         secureTextEntry
@@ -52,7 +56,7 @@ export default function LoginScreen({ navigation }: Props) {
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => navigation.replace('Home')}>
-        <Text style={styles.skipText}>Skip for now</Text>
+        <Text style={[styles.skipText, {color: colors.textMuted}]}>Skip for now</Text>
       </TouchableOpacity>
     </View>
   );
@@ -61,7 +65,6 @@ export default function LoginScreen({ navigation }: Props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     justifyContent: 'center',
     padding: 24,
   },
@@ -74,18 +77,15 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 16,
-    color: '#6b7280',
     marginBottom: 32,
     textAlign: 'center',
   },
   input: {
     height: 52,
     borderWidth: 1,
-    borderColor: '#d1d5db',
     borderRadius: 12,
     paddingHorizontal: 14,
     marginBottom: 16,
-    backgroundColor: '#f9fafb',
   },
   loginButton: {
     height: 52,
@@ -103,7 +103,6 @@ const styles = StyleSheet.create({
   skipText: {
     marginTop: 18,
     textAlign: 'center',
-    color: '#6b7280',
     fontSize: 14,
   },
 });

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Image } from 'react-native';
-
+import { useTheme } from '../constants/ThemeContext';
 
 
 type Props = {
@@ -9,6 +9,8 @@ type Props = {
 };
 
 export default function WelcomeScreen({ navigation }: Props) {
+  const colors = useTheme();
+
   useEffect(() => {
     const timer = setTimeout(() => {
       navigation.navigate('Login');
@@ -18,8 +20,8 @@ export default function WelcomeScreen({ navigation }: Props) {
   }, [navigation]);
 
   return (
-    <View style={styles.container}>
-      <View style={styles.logoContainer}>
+    <View style={[styles.container, {backgroundColor: colors.background }]}>
+      <View style={[styles.logoContainer, {backgroundColor: colors.dateCircle }]}>
   <Image
     source={require('../assets/images/logo.png')}
     style={styles.logo}
@@ -28,7 +30,7 @@ export default function WelcomeScreen({ navigation }: Props) {
     
 
       <Text style={styles.appName}>Mindful Moments</Text>
-      <Text style={styles.subtitle}>Welcome</Text>
+      <Text style={[styles.subtitle, {color: colors.textMuted }]}>Welcome</Text>
     </View>
   );
 }
@@ -36,7 +38,6 @@ export default function WelcomeScreen({ navigation }: Props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
     padding: 24,
@@ -45,7 +46,6 @@ const styles = StyleSheet.create({
   width: 120,
   height: 120,
   borderRadius: 60,
-  backgroundColor: '#e5e7eb',
   alignItems: 'center',
   justifyContent: 'center',
   marginBottom: 24,
@@ -79,6 +79,5 @@ logo: {
   },
   subtitle: {
     fontSize: 18,
-    color: '#6b7280',
   },
 });
