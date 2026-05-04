@@ -13,10 +13,12 @@ import { Ionicons } from '@expo/vector-icons';
 import { format, subDays, startOfDay } from 'date-fns';
 import StorageService from '../services/StorageService';
 import AIService from '../services/AIService';
+import { useTheme } from '../constants/ThemeContext';
 
 const screenWidth = Dimensions.get('window').width;
 
 export default function MoodTrackingScreen() {
+  const colors = useTheme();
   const [moodHistory, setMoodHistory] = useState<Array<{ date: string; mood: number }>>([]);
   const [selectedPeriod, setSelectedPeriod] = useState<'week' | 'month' | 'all'>('week');
   const [affirmation, setAffirmation] = useState<{ affirmation: string; tip: string } | null>(null);
@@ -154,9 +156,9 @@ export default function MoodTrackingScreen() {
   const trend = getMoodTrend();
 
   const chartConfig = {
-    backgroundColor: '#ffffff',
-    backgroundGradientFrom: '#ffffff',
-    backgroundGradientTo: '#ffffff',
+    backgroundColor: colors.card,
+    backgroundGradientFrom: colors.card,
+    backgroundGradientTo: colors.card,
     decimalPlaces: 1,
     color: (opacity = 1) => `rgba(99, 102, 241, ${opacity})`,
     labelColor: (opacity = 1) => `rgba(17, 24, 39, ${opacity})`,
@@ -171,25 +173,20 @@ export default function MoodTrackingScreen() {
   };
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+    <ScrollView style={[styles.container, { backgroundColor: colors.background }]} contentContainerStyle={styles.content}>
       <View style={styles.header}>
-        <Text style={styles.title}>Mood Tracking</Text>
+        <Text style={[styles.title, { color: colors.text}]}>Mood Tracking</Text>
         <View style={styles.periodSelector}>
           {(['week', 'month', 'all'] as const).map((period) => (
             <TouchableOpacity
               key={period}
-              style={[
-                styles.periodButton,
-                selectedPeriod === period && styles.periodButtonActive,
-              ]}
+              style={[styles.periodButton, { backgroundColor: colors.card, borderColor: colors.textMuted },
+                selectedPeriod === period && styles.periodButtonActive]}
               onPress={() => setSelectedPeriod(period)}
-            >
-              <Text
-                style={[
-                  styles.periodButtonText,
-                  selectedPeriod === period && styles.periodButtonTextActive,
-                ]}
               >
+              <Text
+                style={[styles.periodButtonText, { color: colors.textMuted },
+                  selectedPeriod === period && styles.periodButtonTextActive,]}>
                 {period.charAt(0).toUpperCase() + period.slice(1)}
               </Text>
             </TouchableOpacity>
@@ -199,36 +196,36 @@ export default function MoodTrackingScreen() {
 
       {moodHistory.length === 0 ? (
         <View style={styles.emptyState}>
-          <Ionicons name="stats-chart-outline" size={64} color="#9ca3af" />
-          <Text style={styles.emptyText}>No mood data yet</Text>
-          <Text style={styles.emptySubtext}>
+          <Ionicons name="stats-chart-outline" size={64} color={colors.textMuted} />
+          <Text style={[styles.emptyText, { color: colors.text}]}>No mood data yet</Text>
+          <Text style={[styles.emptySubtext, { color: colors.textMuted}]}>
             Start journaling and track your mood to see insights here
           </Text>
         </View>
       ) : (
         <>
           <View style={styles.statsContainer}>
-            <View style={styles.statCard}>
-              <Text style={styles.statLabel}>Average Mood</Text>
+            <View style={[styles.statCard, { backgroundColor: colors.card}]}>
+             <Text style={[styles.statLabel, {color: colors.textMuted}]}>Average Mood</Text>
               <View style={styles.statValueContainer}>
                 <Ionicons
                   name={averageMood >= 3.5 ? 'happy' : averageMood >= 2.5 ? 'happy-outline' : 'sad-outline'}
                   size={32}
                   color={averageMood >= 3.5 ? '#10b981' : averageMood >= 2.5 ? '#f59e0b' : '#ef4444'}
                 />
-                <Text style={styles.statValue}>{averageMood.toFixed(1)}</Text>
+                <Text style={[styles.statValue, {color: colors.text}]}>{averageMood.toFixed(1)}</Text>
               </View>
             </View>
 
-            <View style={styles.statCard}>
-              <Text style={styles.statLabel}>Trend</Text>
+            <View style={[styles.statCard, {backgroundColor: colors.card}]}>
+              <Text style={[styles.statLabel, { color: colors.textMuted}]}>Trend</Text>
               <View style={styles.statValueContainer}>
                 <Ionicons
                   name={trend === 'up' ? 'trending-up' : trend === 'down' ? 'trending-down' : 'remove'}
                   size={32}
                   color={trend === 'up' ? '#10b981' : trend === 'down' ? '#ef4444' : '#9ca3af'}
                 />
-                <Text style={styles.statValue}>
+                <Text style={[styles.statValue, {color: colors.text}]}>
                   {trend === 'up' ? 'Improving' : trend === 'down' ? 'Declining' : 'Stable'}
                 </Text>
               </View>
@@ -236,41 +233,41 @@ export default function MoodTrackingScreen() {
           </View>
 
           {affirmation && (
-            <View style={styles.affirmationCard}>
+            <View style={[styles.affirmationCard, {backgroundColor: colors.sleepBox}]}>
               <View style={styles.affirmationHeader}>
                 <Ionicons name="heart" size={20} color="#ec4899" />
                 <Text style={styles.affirmationTitle}>Daily Affirmation</Text>
               </View>
-              <Text style={styles.affirmationText}>{affirmation.affirmation}</Text>
-              <View style={styles.tipContainer}>
+              <Text style={[styles.affirmationText, {color: colors.text}]}>{affirmation.affirmation}</Text>
+              <View style={[styles.tipContainer, {backgroundColor: colors.card}]}>
                 <Ionicons name="leaf" size={16} color="#10b981" />
-                <Text style={styles.tipText}>{affirmation.tip}</Text>
+                <Text style={[styles.tipText, { color: colors.text}]}>{affirmation.tip}</Text>
               </View>
             </View>
           )}
 
           {insights && insights.insights.length > 0 && (
-            <View style={styles.insightsCard}>
+            <View style={[styles.insightsCard, {backgroundColor: colors.affirmationBox}]}>
               <View style={styles.insightsHeader}>
                 <Ionicons name="bulb" size={20} color="#f59e0b" />
                 <Text style={styles.insightsTitle}>AI Insights</Text>
               </View>
               {insights.summary && (
-                <Text style={styles.insightsSummary}>{insights.summary}</Text>
+                <Text style={[styles.insightsSummary, {color: colors.text}]}>{insights.summary}</Text>
               )}
               <View style={styles.insightsList}>
                 {insights.insights.map((insight, index) => (
                   <View key={index} style={styles.insightItem}>
                     <Ionicons name="checkmark-circle" size={16} color="#648767" />
-                    <Text style={styles.insightText}>{insight}</Text>
+                    <Text style={[styles.insightText, { color: colors.text}]}>{insight}</Text>
                   </View>
                 ))}
               </View>
             </View>
           )}
 
-          <View style={styles.chartContainer}>
-            <Text style={styles.chartTitle}>Mood Over Time</Text>
+          <View style={[styles.chartContainer, {backgroundColor: colors.card}]}>
+            <Text style={[styles.chartTitle, { color: colors.text }]}>Mood Over Time</Text>
             <LineChart
               data={chartData}
               width={screenWidth - 32}
@@ -287,18 +284,18 @@ export default function MoodTrackingScreen() {
             />
           </View>
 
-          <View style={styles.legend}>
+          <View style={[styles.legend, {backgroundColor: colors.card}]}>
             <View style={styles.legendItem}>
               <View style={[styles.legendColor, { backgroundColor: '#ef4444' }]} />
-              <Text style={styles.legendText}>1-2 (Not Great)</Text>
+              <Text style={[styles.legendText, {color: colors.textMuted }]}>1-2 (Not Great)</Text>
             </View>
             <View style={styles.legendItem}>
               <View style={[styles.legendColor, { backgroundColor: '#f59e0b' }]} />
-              <Text style={styles.legendText}>3 (Okay)</Text>
+              <Text style={[styles.legendText, { color: colors.textMuted}]}>3 (Okay)</Text>
             </View>
             <View style={styles.legendItem}>
               <View style={[styles.legendColor, { backgroundColor: '#10b981' }]} />
-              <Text style={styles.legendText}>4-5 (Great)</Text>
+              <Text style={[styles.legendText, { color: colors.textMuted }]}>4-5 (Great)</Text>
             </View>
           </View>
         </>
@@ -310,7 +307,6 @@ export default function MoodTrackingScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f9fafb',
   },
   content: {
     padding: 16,
@@ -322,7 +318,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: '700',
-    color: '#111827',
     marginBottom: 16,
   },
   periodSelector: {
@@ -334,9 +329,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: 8,
-    backgroundColor: '#fff',
     borderWidth: 1,
-    borderColor: '#e5e7eb',
     alignItems: 'center',
   },
   periodButtonActive: {
@@ -346,7 +339,6 @@ const styles = StyleSheet.create({
   periodButtonText: {
     fontSize: 14,
     fontWeight: '500',
-    color: '#6b7280',
   },
   periodButtonTextActive: {
     color: '#fff',
@@ -359,12 +351,10 @@ const styles = StyleSheet.create({
   emptyText: {
     fontSize: 20,
     fontWeight: '600',
-    color: '#374151',
     marginTop: 16,
   },
   emptySubtext: {
     fontSize: 14,
-    color: '#9ca3af',
     marginTop: 8,
     textAlign: 'center',
   },
@@ -386,7 +376,6 @@ const styles = StyleSheet.create({
   },
   statLabel: {
     fontSize: 12,
-    color: '#6b7280',
     marginBottom: 8,
   },
   statValueContainer: {
@@ -397,10 +386,8 @@ const styles = StyleSheet.create({
   statValue: {
     fontSize: 20,
     fontWeight: '600',
-    color: '#111827',
   },
   chartContainer: {
-    backgroundColor: '#fff',
     borderRadius: 12,
     padding: 16,
     marginBottom: 16,
@@ -413,7 +400,6 @@ const styles = StyleSheet.create({
   chartTitle: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#111827',
     marginBottom: 16,
   },
   chart: {
@@ -422,7 +408,6 @@ const styles = StyleSheet.create({
   legend: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    backgroundColor: '#fff',
     borderRadius: 12,
     padding: 16,
   },
@@ -438,10 +423,8 @@ const styles = StyleSheet.create({
   },
   legendText: {
     fontSize: 12,
-    color: '#6b7280',
   },
   affirmationCard: {
-    backgroundColor: '#fdf2f8',
     borderRadius: 12,
     padding: 16,
     marginBottom: 16,
@@ -461,7 +444,6 @@ const styles = StyleSheet.create({
   },
   affirmationText: {
     fontSize: 15,
-    color: '#111827',
     lineHeight: 22,
     fontStyle: 'italic',
     marginBottom: 12,
@@ -470,18 +452,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-start',
     gap: 8,
-    backgroundColor: '#fff',
     padding: 12,
     borderRadius: 8,
   },
   tipText: {
     flex: 1,
     fontSize: 14,
-    color: '#4b5563',
     lineHeight: 20,
   },
   insightsCard: {
-    backgroundColor: '#fffbeb',
     borderRadius: 12,
     padding: 16,
     marginBottom: 16,
@@ -501,7 +480,6 @@ const styles = StyleSheet.create({
   },
   insightsSummary: {
     fontSize: 14,
-    color: '#111827',
     lineHeight: 20,
     marginBottom: 12,
     fontStyle: 'italic',
@@ -517,7 +495,6 @@ const styles = StyleSheet.create({
   insightText: {
     flex: 1,
     fontSize: 14,
-    color: '#4b5563',
     lineHeight: 20,
   },
 });
