@@ -21,12 +21,7 @@ export default function WelcomeScreen({ navigation }: Props) {
 
   return (
     <View style={[styles.container, {backgroundColor: colors.background }]}>
-      <View style={[styles.logoContainer, {backgroundColor: colors.dateCircle }]}>
-  <Image
-    source={require('../assets/images/logo.png')}
-    style={styles.logo}
-  />
-</View>
+    
     
 
       <Text style={styles.appName}>Mindful Moments</Text>
@@ -56,17 +51,8 @@ logo: {
   resizeMode: 'contain',
   marginBottom: 24,
 },
-  /*
-  logoPlaceholder: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    backgroundColor: '#e5e7eb',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 24,
-  },
-  */
+
+  
   logoText: {
     fontSize: 18,
     color: '#6b7280',
