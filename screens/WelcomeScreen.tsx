@@ -14,7 +14,7 @@ export default function WelcomeScreen({ navigation }: Props) {
   useEffect(() => {
     const timer = setTimeout(() => {
       navigation.navigate('Login');
-    }, 4000);
+    }, 2000);
 
     return () => clearTimeout(timer);
   }, [navigation]);

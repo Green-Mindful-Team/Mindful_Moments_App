@@ -6,22 +6,17 @@ import {
   Image,
   TouchableOpacity,
   SafeAreaView,
+  ScrollView
 } from 'react-native';
+
+import { Ionicons } from '@expo/vector-icons';
 import { daytimeAffirmations, eveningAffirmations } from '../data/affirmations';
 import { useTheme } from '../constants/ThemeContext';
 
 
 
 
-const days = [
-  { day: 'Mon', date: 7 },
-  { day: 'Tue', date: 8 },
-  { day: 'Wed', date: 9 },
-  { day: 'Thu', date: 10 },
-  { day: 'Fri', date: 11 },
-  { day: 'Sat', date: 12 },
-  { day: 'Sun', date: 13 },
-];
+
 type Props = {
   navigation: any;
 };
@@ -29,9 +24,44 @@ type Props = {
 export default function HomeScreen({ navigation }: Props) {
 
   const colors = useTheme();
-  const [selectedDate, setSelectedDate] = useState(10);
+  const [selectedDate, setSelectedDate] = useState(new Date().getDate());
   const [affirmation, setAffirmation] = useState('');
   const [sleepHours, setSleepHours] = useState<number | null>(null);
+  const sleepOptions = Array.from({ length: 25 }, (_, i) => i);
+
+
+  //week row code (top of page)
+
+  const today = new Date();
+
+  const monthName = today.toLocaleString('default', { month: 'long' });
+  const year = today.getFullYear();
+
+  const getWeekDays = () => {
+  const today = new Date();
+  const dayOfWeek = today.getDay(); // 0 (Sun) → 6 (Sat)
+
+  const monday = new Date(today);
+  const diff = today.getDate() - dayOfWeek + (dayOfWeek === 0 ? -6 : 1);
+  monday.setDate(diff);
+
+  const days = [];
+
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(monday);
+    d.setDate(monday.getDate() + i);
+
+    days.push({
+      day: d.toLocaleString('default', { weekday: 'short' }),
+      date: d.getDate(),
+    });
+  }
+
+  return days;
+};
+//end of week row code 
+
+const days = getWeekDays();
   
   const getAffirmation = () => {
   const hour = new Date().getHours();
@@ -57,6 +87,10 @@ useEffect(() => { setAffirmation(getAffirmation()); }, []);
           style={styles.profileImage}
         />
       </View>
+
+      <Text style={styles.monthText}>
+      {monthName} {year}
+      </Text>
 
       <View style={styles.calendarRow}>
         {days.map((item) => {
@@ -92,14 +126,47 @@ useEffect(() => { setAffirmation(getAffirmation()); }, []);
         })}
       </View>
 
-    <View style={[styles.affirmationBox, { backgroundColor: colors.affirmationBox, borderLeftColor: colors.affirmationBorder }]}>
-      <Text style={styles.affirmationTitle}>Tip of the day</Text>
+
+
+    <View
+  style={[
+    styles.affirmationBox,
+    {
+      backgroundColor: colors.affirmationBox,
+      borderLeftColor: colors.affirmationBorder,
+    },
+  ]}
+>
+  {/* 🔹 Header Row */}
+  <View style={styles.affirmationHeader}>
+    <View style={styles.iconCircle}>
       <Image
         source={require('../assets/images/lightbulb.png')}
         style={styles.lightbulb}
       />
-      <Text style={[styles.affirmationText, { color: colors.affirmationText }]}>{affirmation}</Text>
     </View>
+
+    <Text style={styles.affirmationTitle}>Tip of the day</Text>
+  </View>
+
+  {/* 🔹 Tip text */}
+  <Text
+    style={[
+      styles.affirmationText,
+      { color: colors.affirmationText },
+    ]}
+  >
+    {affirmation}
+  </Text>
+</View>
+
+    <TouchableOpacity
+  style={styles.newEntryButton}
+  onPress={() => navigation.navigate('NewEntry')}
+>
+  <Ionicons name="add" size={22} color="white" />
+  <Text style={styles.newEntryButtonText}>New Entry</Text>
+</TouchableOpacity>
 
     <TouchableOpacity
         style={[styles.journalButton, {backgroundColor: colors.journalButton }]}
@@ -108,26 +175,45 @@ useEffect(() => { setAffirmation(getAffirmation()); }, []);
         <Text style={styles.journalButtonText}>Journal Logs</Text>
     </TouchableOpacity>
 
-    <View style={[styles.sleepBox, { backgroundColor: colors.sleepBox }]}>
-  <Text style={styles.sleepTitle}>How did you sleep?</Text>
 
-  <View style={styles.sleepOptions}>
-    {[4, 5, 6, 7, 8].map((hours) => (
-      <TouchableOpacity
-        key={hours}
-        style={[styles.sleepButton, { backgroundColor: colors.sleepButton },
-          sleepHours === hours && styles.sleepButtonSelected,
-        ]}
-        onPress={() => setSleepHours(hours)}
-      >
-        <Text
-          style={[styles.sleepButtonText, { color: colors.sleepButtonText },
-            sleepHours === hours && styles.sleepButtonTextSelected]}>
-          {hours}h
-        </Text>
-      </TouchableOpacity>
-    ))}
-  </View>
+
+
+  <View style={styles.sleepBox}>
+  <Text style={styles.sleepTitle}>Sleep</Text>
+
+  <Text style={styles.sleepValue}>
+    {sleepHours !== null ? `${sleepHours} hrs` : '-- hrs'}
+  </Text>
+
+  <ScrollView
+    horizontal
+    showsHorizontalScrollIndicator={false}
+    contentContainerStyle={styles.sleepScroll}
+  >
+    {sleepOptions.map((hour) => {
+      const isSelected = sleepHours === hour;
+
+      return (
+        <TouchableOpacity
+          key={hour}
+          style={[
+            styles.sleepOption,
+            isSelected && styles.selectedSleepOption,
+          ]}
+          onPress={() => setSleepHours(hour)}
+        >
+          <Text
+            style={[
+              styles.sleepOptionText,
+              isSelected && styles.selectedSleepOptionText,
+            ]}
+          >
+            {hour}
+          </Text>
+        </TouchableOpacity>
+      );
+    })}
+  </ScrollView>
 </View>
 </SafeAreaView>
   );
@@ -136,27 +222,142 @@ useEffect(() => { setAffirmation(getAffirmation()); }, []);
 const styles = StyleSheet.create({
  container:            { flex: 1, paddingHorizontal: 20, paddingTop: 20 },
   header:               { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 28 },
-  greeting:             { marginLeft: 20, marginTop: 10, fontSize: 28, fontWeight: '600' },
+  greeting:             { marginLeft: 20, marginTop: 10, fontSize: 20, fontWeight: '600' },
   profileImage:         { width: 54, height: 54, borderRadius: 27 },
+
+
+  monthText: {
+  fontSize: 22,
+  fontWeight: '800',
+  color:'#648767',
+  textAlign: 'center',
+  marginBottom: 20,
+  },
+
+
   calendarRow:          { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' },
   dayWrapper:           { alignItems: 'center' },
   dayText:              { fontSize: 14, marginBottom: 10 },
   selectedDayText:      { fontWeight: '600' },
-  dateCircle:           { width: 44, height: 44, borderRadius: 22, justifyContent: 'center', alignItems: 'center' },
+  dateCircle:           { width: 40, height: 40, borderRadius: 22, justifyContent: 'center', alignItems: 'center',marginLeft:7,marginRight:7},
   selectedDateCircle:   { backgroundColor: '#f4b400' },
   dateText:             { fontSize: 16, fontWeight: '500' },
   selectedDateText:     { fontWeight: '700' },
-  affirmationBox:       { padding: 16, borderRadius: 12, marginTop: 33, marginBottom: 8, marginLeft: 20, marginRight: 20, borderLeftWidth: 20 },
-  affirmationTitle:     { fontSize: 18, fontWeight: '600', color: '#fff', marginBottom: 9 },
+
+
+  //tip of the day box 
+
+  affirmationHeader: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  marginBottom: 10,
+},
+
+iconCircle: {
+  width: 36,
+  height: 36,
+  borderRadius: 18,
+  backgroundColor: 'white',
+  alignItems: 'center',
+  justifyContent: 'center',
+  marginRight: 10,
+},
+
+lightbulb: {
+  width: 20,
+  height: 20,
+  resizeMode: 'contain',
+},
+
+affirmationTitle: {
+  fontSize: 16,
+  fontWeight: '700',
+},
+
+
+  
+  //lightbulb:            { width: 30, height: 30, resizeMode: 'contain', marginBottom: 24 },
+  affirmationBox:       { padding: 16, borderRadius: 12, marginTop: 33, marginBottom: 8, marginLeft: 20, marginRight: 20, borderLeftWidth: 10 },
+  //affirmationTitle:     { fontSize: 18, fontWeight: '600', color: '#fff', marginBottom: 9 },
   affirmationText:      { fontSize: 16, fontStyle: 'italic' },
+ 
+
   journalButton:        { marginTop: 32, marginLeft: 32, marginRight: 32, height: 59, borderRadius: 12, justifyContent: 'center', alignItems: 'center' },
   journalButtonText:    { color: '#fff', fontSize: 18, fontWeight: '600' },
-  sleepBox:             { padding: 16, borderRadius: 12, marginTop: 20, marginBottom: 16, marginRight: 8, marginLeft: 8 },
-  sleepTitle:           { fontSize: 17, fontWeight: '600', marginBottom: 10 },
-  sleepOptions:         { flexDirection: 'row', justifyContent: 'space-between' },
-  sleepButton:          { paddingVertical: 8, paddingHorizontal: 12, borderRadius: 8 },
-  sleepButtonSelected:  { backgroundColor: '#6366f1' },
-  sleepButtonText:      { },
-  sleepButtonTextSelected: { color: '#fff', fontWeight: '600' },
-  lightbulb:            { width: 60, height: 60, resizeMode: 'contain', marginBottom: 24 },
+
+
+
+ newEntryButton: {
+  backgroundColor: '#84960d',
+  paddingVertical: 14,
+  borderRadius: 12,
+  alignItems: 'center',
+  justifyContent: 'center',
+  flexDirection: 'row',
+  gap: 8,
+  marginHorizontal: 24,
+  marginTop: 20,
+  height: 59,
+  marginLeft: 32, marginRight: 32,
+},
+
+newEntryButtonText: {
+  color: 'white',
+  fontSize: 18,
+  fontWeight: '700',
+},
+  
+
+  sleepBox: {
+  marginTop:20,
+  marginLeft:20,
+  width: 160,
+  height: 160,
+  borderRadius: 20,
+  backgroundColor: '#F4EFEA',
+  padding: 16,
+  justifyContent: 'space-between',
+},
+
+sleepTitle: {
+  fontSize: 16,
+  fontWeight: '600',
+},
+
+sleepValue: {
+  fontSize: 28,
+  fontWeight: '700',
+  textAlign: 'center',
+},
+
+sleepScroll: {
+  alignItems: 'center',
+  paddingHorizontal: 4,
+},
+
+sleepOption: {
+  width: 36,
+  height: 36,
+  borderRadius: 18,
+  alignItems: 'center',
+  justifyContent: 'center',
+  marginRight: 8,
+  backgroundColor: '#E4DDD5',
+},
+
+selectedSleepOption: {
+  backgroundColor: '#7A9E7E',
+},
+
+sleepOptionText: {
+  fontSize: 14,
+  fontWeight: '600',
+},
+
+selectedSleepOptionText: {
+  color: 'white',
+},
+
+  
+ 
 });
