@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
 import { useTheme } from '../constants/ThemeContext';
 import { useAuth } from '../constants/AuthContext';
@@ -16,58 +17,110 @@ type Props = {
 
 export default function LoginScreen({ navigation }: Props) {
   const colors = useTheme();
-  const { login } = useAuth();
+  const { login, register, skipLogin, hasRegisteredAccount, isLoading } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [submitting, setSubmitting] = useState(false);
 
-  const handleLogin = () => {
+  const handleSubmit = async () => {
     if (!email.trim() || !password.trim()) {
       Alert.alert('Missing info', 'Please enter your email and password.');
       return;
     }
 
-    // Set logged in status - this will trigger navigation to main app
-    login();
+    setSubmitting(true);
+    try {
+      if (hasRegisteredAccount) {
+        const result = await login(email, password);
+        if (!result.success) {
+          Alert.alert('Could not log in', result.message ?? 'Incorrect email or password.');
+        }
+      } else {
+        const result = await register(email, password);
+        if (!result.success) {
+          Alert.alert('Could not create account', result.message ?? 'Please check your details.');
+        }
+      }
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const handleSkip = () => {
-    // Allow user to skip login and go directly to main app
-    login();
+    void skipLogin();
   };
 
+  if (isLoading) {
+    return (
+      <View style={[styles.container, { backgroundColor: colors.background }]}>
+        <ActivityIndicator size="large" color="#648767" />
+      </View>
+    );
+  }
+
   return (
-    <View style={[styles.container, {backgroundColor: colors.background}]}>
-      <Text style={styles.title}>Login</Text>
-      <Text style={[styles.subtitle, {color: colors.textMuted }]}>Welcome back to Mindful Moments</Text>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+      <Text style={styles.title}>{hasRegisteredAccount ? 'Login' : 'Create account'}</Text>
+      <Text style={[styles.subtitle, { color: colors.textMuted }]}>
+        {hasRegisteredAccount
+          ? 'Welcome back to Mindful Moments'
+          : 'Choose an email and password for this device (stored locally).'}
+      </Text>
 
       <TextInput
-        style={[styles.input, {backgroundColor: colors.background, borderColor: colors.textMuted, color: colors.text,}]}
+        style={[
+          styles.input,
+          {
+            backgroundColor: colors.background,
+            borderColor: colors.textMuted,
+            color: colors.text,
+          },
+        ]}
         placeholder="Email"
         placeholderTextColor={colors.textMuted}
         value={email}
         onChangeText={setEmail}
         autoCapitalize="none"
         keyboardType="email-address"
+        editable={!submitting}
       />
 
       <TextInput
-        style={[styles.input, {backgroundColor: colors.background, borderColor: colors.textMuted, color: colors.text}]}
-        placeholder="Password"
+        style={[
+          styles.input,
+          {
+            backgroundColor: colors.background,
+            borderColor: colors.textMuted,
+            color: colors.text,
+          },
+        ]}
+        placeholder={hasRegisteredAccount ? 'Password' : 'Password (at least 8 characters)'}
         placeholderTextColor={colors.textMuted}
         value={password}
         onChangeText={setPassword}
         secureTextEntry
+        editable={!submitting}
       />
 
-      <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-        <Text style={styles.loginButtonText}>Log In</Text>
+      <TouchableOpacity
+        style={[styles.loginButton, submitting && styles.loginButtonDisabled]}
+        onPress={() => void handleSubmit()}
+        disabled={submitting}
+      >
+        {submitting ? (
+          <ActivityIndicator color="#fff" />
+        ) : (
+          <Text style={styles.loginButtonText}>
+            {hasRegisteredAccount ? 'Log In' : 'Create account'}
+          </Text>
+        )}
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={handleSkip}>
+      <TouchableOpacity onPress={handleSkip} disabled={submitting}>
         <Text style={[styles.skipText, { color: colors.textMuted }]}>Skip for now</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => navigation.navigate('Welcome')}>
+      <TouchableOpacity onPress={() => navigation.navigate('Welcome')} disabled={submitting}>
         <Text style={[styles.introLink, { color: colors.textMuted }]}>View app intro</Text>
       </TouchableOpacity>
     </View>
@@ -106,6 +159,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 8,
+  },
+  loginButtonDisabled: {
+    opacity: 0.7,
   },
   loginButtonText: {
     color: '#fff',
